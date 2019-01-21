@@ -1,5 +1,5 @@
 ---
-title: New Beginnings
+title: I Also Have A Hero Image
 date: '2015-05-28T22:40:32.169Z'
 ---
 

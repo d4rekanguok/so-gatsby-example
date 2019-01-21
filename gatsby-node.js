@@ -52,7 +52,7 @@ exports.createPages = ({ graphql, actions }) => {
   })
 }
 
-const imageToDir = new Map()
+const remarkToDir = new Map()
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
@@ -66,12 +66,13 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
 
     const { dir } = getNode(node.parent);
-    imageToDir.set(dir, node.id);
+    remarkToDir.set(dir, node.id);
   }
 
   if (node.internal.type === `ImageSharp`) {
-    const { dir } = getNode(node.parent);
-    const postId = imageToDir.get(dir);
+    const { dir, name } = getNode(node.parent);
+    if (name !== 'hero') return;
+    const postId = remarkToDir.get(dir);
     createNodeField({
       name: `postId`,
       node,
