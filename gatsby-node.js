@@ -1,4 +1,3 @@
-const fs = require('fs')
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
@@ -15,7 +14,7 @@ exports.createPages = ({ graphql, actions }) => {
         ) {
           edges {
             node {
-              fileAbsolutePath
+              id
               fields {
                 slug
               }
@@ -39,25 +38,6 @@ exports.createPages = ({ graphql, actions }) => {
       const previous = index === posts.length - 1 ? null : posts[index + 1].node
       const next = index === 0 ? null : posts[index - 1].node
 
-      const { dir } = path.parse(post.node.fileAbsolutePath);
-      const hasHero = fs.existsSync(path.join(dir, 'hero.jpg'));
-      if (hasHero) {
-        const query = `
-        {
-          imageSharp(fields: {
-            dir: { eq: "${dir}" }
-          }) {
-            id
-          }
-        }
-        `
-        graphql(query).then(result => {
-          if (result.errors) throw result.errors
-          const heroId = result.data.imageSharp.id
-          console.log(heroId);
-        })
-      }
-
       createPage({
         path: post.node.fields.slug,
         component: blogPost,
@@ -65,23 +45,17 @@ exports.createPages = ({ graphql, actions }) => {
           slug: post.node.fields.slug,
           previous,
           next,
+          postId: post.node.id,
         },
       })
     })
   })
 }
 
+const imageToDir = new Map()
+
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
-
-  if (node.internal.type === `ImageSharp` && node.parent) {
-    const { dir } = getNode(node.parent);
-    createNodeField({
-      node,
-      name: 'dir',
-      value: dir,
-    })
-  }
 
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode })
@@ -89,6 +63,19 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       name: `slug`,
       node,
       value,
+    })
+
+    const { dir } = getNode(node.parent);
+    imageToDir.set(dir, node.id);
+  }
+
+  if (node.internal.type === `ImageSharp`) {
+    const { dir } = getNode(node.parent);
+    const postId = imageToDir.get(dir);
+    createNodeField({
+      name: `postId`,
+      node,
+      value: postId,
     })
   }
 }

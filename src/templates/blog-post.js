@@ -11,11 +11,13 @@ class BlogPostTemplate extends React.Component {
     const post = this.props.data.markdownRemark
     const siteTitle = this.props.data.site.siteMetadata.title
     const { previous, next } = this.props.pageContext
+    const hero = this.props.data.imageSharp
 
     return (
       <Layout location={this.props.location} title={siteTitle}>
         <SEO title={post.frontmatter.title} description={post.excerpt} />
         <h1>{post.frontmatter.title}</h1>
+        {hero && <img src={hero.fixed.src} />}
         <p
           style={{
             ...scale(-1 / 5),
@@ -66,7 +68,7 @@ class BlogPostTemplate extends React.Component {
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!) {
+  query BlogPostBySlug($slug: String!, $postId: String!) {
     site {
       siteMetadata {
         title
@@ -80,6 +82,11 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+      }
+    }
+    imageSharp(fields: {postId: { eq: $postId }}) {
+      fixed {
+        src
       }
     }
   }
