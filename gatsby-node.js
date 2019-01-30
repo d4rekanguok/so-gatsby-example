@@ -80,3 +80,27 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     })
   }
 }
+
+const { GraphQLString, getNamedType } = require("gatsby/graphql")
+
+exports.setFieldsOnGraphQLNodeType = ({ type }) => {
+  if (type.name === `MarkdownRemark`) {
+    
+    return {
+      safeImage: {
+        type: getNamedType(GraphQLString),
+        args: {
+          myArgument: {
+            type: GraphQLString,
+          }
+        },
+        resolve: (source, fieldArgs) => {
+          return source.frontmatter.image
+        }
+      }
+    }
+  }
+
+  // by default return empty object
+  return {}
+}
