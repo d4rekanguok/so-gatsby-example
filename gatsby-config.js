@@ -42,6 +42,20 @@ module.exports = {
           `gatsby-remark-prismjs`,
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-smartypants`,
+          {
+            resolve:`gatsby-remark-default-html-attrs`,
+            options: {
+              "h1": "h1",
+              "heading[depth=2]": ["h2", "bold"],
+              "heading[depth=3]": {
+                className: "h3",
+                style: "color: red;",
+              },
+              "p": {
+                className: "paragraph",
+              }
+            }
+          }
         ],
       },
     },

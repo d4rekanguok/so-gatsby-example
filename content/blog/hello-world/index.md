@@ -5,6 +5,15 @@ date: '2015-05-01T22:12:03.284Z'
 
 This is my first post on my new fake blog! How exciting!
 
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading __6__
+
+
+
 I'm sure I'll write a lot more interesting things in the future.
 
 Oh, and here's a great quote from this Wikipedia on
@@ -19,3 +28,5 @@ Oh, and here's a great quote from this Wikipedia on
 > firm-textured, round yolk that is bright orange-red in color.
 
 ![Chinese Salty Egg](./hero.jpg)
+
+![video](./video.png)
