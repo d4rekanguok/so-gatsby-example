@@ -21,7 +21,7 @@ export default class HTML extends React.Component {
             id="___gatsby"
             dangerouslySetInnerHTML={{ __html: this.props.body }}
           />
-          {this.props.postBodyComponents}
+          {/* {process.env.NODE_ENV !== 'production' && this.props.postBodyComponents} */}
         </body>
       </html>
     )

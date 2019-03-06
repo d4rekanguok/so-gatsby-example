@@ -18,6 +18,7 @@ function Bio() {
             }}
           >
             <Image
+              className='test'
               fixed={data.avatar.childImageSharp.fixed}
               alt={author}
               style={{
@@ -30,6 +31,15 @@ function Bio() {
                 borderRadius: `50%`,
               }}
             />
+            <style jsx>{`
+              .test img {
+                transition: 3000ms !important;
+              }
+              .test picture {
+                transition: 3000ms !important;
+            }
+            `}
+            </style>
             <p>
               Written by <strong>{author}</strong> who lives and works in San
               Francisco building useful things.
